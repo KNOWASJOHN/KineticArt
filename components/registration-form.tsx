@@ -42,8 +42,21 @@ export default function RegistrationForm({ onSuccess }: RegistrationFormProps) {
     setError('');
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const { createClient } = await import('@/utils/supabase/client');
+      const supabase = createClient();
+
+      const { error: supabaseError } = await supabase
+        .from('participants')
+        .insert([
+          {
+            name: formData.fullName,
+            email: formData.email,
+            college: formData.college,
+            phone: formData.phone,
+          },
+        ]);
+
+      if (supabaseError) throw supabaseError;
 
       // Log submission (in real app, would send to backend)
       console.log('[v0] Form submitted:', formData);
@@ -51,8 +64,8 @@ export default function RegistrationForm({ onSuccess }: RegistrationFormProps) {
       // Reset form and call success callback
       setFormData({ fullName: '', email: '', college: '', phone: '' });
       onSuccess?.();
-    } catch (err) {
-      setError('Failed to register. Please try again.');
+    } catch (err: any) {
+      setError(err.message || 'Failed to register. Please try again.');
       console.error('[v0] Registration error:', err);
     } finally {
       setIsLoading(false);

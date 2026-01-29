@@ -1,115 +1,28 @@
 import { Participant, columns } from "@/components/participants/columns"
 import { DataTable } from "@/components/participants/data-table"
 
+import { createClient } from "@/utils/supabase/server"
+
 async function getData(): Promise<Participant[]> {
-    // Mock data matching the futuristic Indian college context
-    return [
-        {
-            id: "1",
-            name: "Arjun Narayanan",
-            email: "arjun.n@christ.edu.in",
-            college: "CHRIST College of Engineering",
-            registrationDate: "2026-01-28T09:30:00",
-        },
-        {
-            id: "2",
-            name: "Sneha Reddy",
-            email: "sneha.r@iitm.ac.in",
-            college: "IIT Madras",
-            registrationDate: "2026-01-28T10:15:00",
-        },
-        {
-            id: "3",
-            name: "Mohammed Fazil",
-            email: "fazil.m@nitc.ac.in",
-            college: "NIT Calicut",
-            registrationDate: "2026-01-28T11:45:00",
-        },
-        {
-            id: "4",
-            name: "Diya Menon",
-            email: "diya.menon@cet.ac.in",
-            college: "College of Engineering Trivandrum",
-            registrationDate: "2026-01-27T14:20:00",
-        },
-        {
-            id: "5",
-            name: "Rahul Krishnan",
-            email: "rahul.k@cusat.ac.in",
-            college: "CUSAT",
-            registrationDate: "2026-01-27T16:50:00",
-        },
-        {
-            id: "6",
-            name: "Ananya S",
-            email: "ananya.s@rajagiri.edu",
-            college: "Rajagiri School of Engineering",
-            registrationDate: "2026-01-26T09:00:00",
-        },
-        {
-            id: "7",
-            name: "Karthik V",
-            email: "karthik.v@model.ac.in",
-            college: "Model Engineering College",
-            registrationDate: "2026-01-26T11:10:00",
-        },
-        {
-            id: "8",
-            name: "Priya Thomas",
-            email: "priya.t@fisat.ac.in",
-            college: "FISAT",
-            registrationDate: "2026-01-25T13:45:00",
-        },
-        {
-            id: "9",
-            name: "Abhishek Kumar",
-            email: "abhishek.k@amrita.edu",
-            college: "Amrita Vishwa Vidyapeetham",
-            registrationDate: "2026-01-25T15:30:00",
-        },
-        {
-            id: "10",
-            name: "Lakshmi Nair",
-            email: "lakshmi.n@scms.ac.in",
-            college: "SCMS School of Engineering",
-            registrationDate: "2026-01-24T10:20:00",
-        },
-        {
-            id: "11",
-            name: "Rohan Das",
-            email: "rohan.d@bits.edu",
-            college: "BITS Pilani",
-            registrationDate: "2026-01-24T12:00:00",
-        },
-        {
-            id: "12",
-            name: "Meera John",
-            email: "meera.j@mac.ac.in",
-            college: "Mar Athanasius College",
-            registrationDate: "2026-01-23T09:40:00",
-        },
-        {
-            id: "13",
-            name: "Varun B",
-            email: "varun.b@tkm.ac.in",
-            college: "TKM College of Engineering",
-            registrationDate: "2026-01-23T14:15:00",
-        },
-        {
-            id: "14",
-            name: "Nandini R",
-            email: "nandini.r@gec.ac.in",
-            college: "GEC Thrissur",
-            registrationDate: "2026-01-22T11:00:00",
-        },
-        {
-            id: "15",
-            name: "Sanjay Gupta",
-            email: "sanjay.g@vit.ac.in",
-            college: "VIT Vellore",
-            registrationDate: "2026-01-22T16:30:00",
-        }
-    ]
+    const supabase = await createClient()
+    const { data, error } = await supabase
+        .from('participants')
+        .select('*')
+        .order('created_at', { ascending: false })
+
+    if (error) {
+        console.error("Error fetching participants:", error)
+        return []
+    }
+
+    // Map Supabase data to Participant interface
+    return (data || []).map((item: any) => ({
+        id: item.id,
+        name: item.name,
+        email: item.email,
+        college: item.college,
+        registrationDate: item.created_at,
+    }))
 }
 
 export default async function ParticipantsPage() {
