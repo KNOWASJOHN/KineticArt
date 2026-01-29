@@ -45,7 +45,18 @@ export default function RegistrationForm({ onSuccess }: RegistrationFormProps) {
       const { createClient } = await import('@/utils/supabase/client');
       const supabase = createClient();
 
-      const { error: supabaseError } = await supabase
+      // Check if email already exists
+      const { data: existingUser } = await supabase
+        .from('participants')
+        .select('id')
+        .eq('email', formData.email)
+        .maybeSingle();
+
+      if (existingUser) {
+        throw new Error('This email is already registered.');
+      }
+
+      const { data, error: supabaseError } = await supabase
         .from('participants')
         .insert([
           {
@@ -54,12 +65,32 @@ export default function RegistrationForm({ onSuccess }: RegistrationFormProps) {
             college: formData.college,
             phone: formData.phone,
           },
-        ]);
+        ])
+        .select()
+        .single();
 
       if (supabaseError) throw supabaseError;
 
       // Log submission (in real app, would send to backend)
       console.log('[v0] Form submitted:', formData);
+
+      // Send confirmation email
+      try {
+        const { error: funcError } = await supabase.functions.invoke('send-email', {
+          body: {
+            id: data.id,
+            name: formData.fullName,
+            email: formData.email,
+            college: formData.college,
+          },
+        });
+        if (funcError) {
+          console.error('Failed to send confirmation email:', funcError);
+          // We don't block success on email failure, just log it
+        }
+      } catch (emailErr) {
+        console.error('Error invoking email function:', emailErr);
+      }
 
       // Reset form and call success callback
       setFormData({ fullName: '', email: '', college: '', phone: '' });
