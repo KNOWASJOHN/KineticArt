@@ -43,7 +43,18 @@ export const columns: ColumnDef<Participant>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => <div className="text-muted-foreground">{row.getValue("email")}</div>,
+    cell: ({ row }) => {
+      const email = row.getValue("email") as string
+      // Simple masking logic: show first 2 chars, mask the rest until @, then show domain
+      const [localPart, domain] = email.split('@')
+      const maskedLocal = localPart.length > 2
+        ? `${localPart.substring(0, 2)}***`
+        : `${localPart}***`
+
+      const maskedEmail = `${maskedLocal}@${domain}`
+
+      return <div className="text-muted-foreground font-mono">{maskedEmail}</div>
+    },
   },
   {
     accessorKey: "college",
