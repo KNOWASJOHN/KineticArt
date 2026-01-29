@@ -78,7 +78,7 @@ export default function Home() {
               <div className="bg-card/30 backdrop-blur-sm p-6 rounded-xl border border-white/10">
                 <p className="text-xs uppercase font-bold text-primary tracking-widest mb-2">Date</p>
                 <p className="text-xl font-semibold text-white">4th & 5th</p>
-                <p className="text-sm text-muted-foreground">February 2025</p>
+                <p className="text-sm text-muted-foreground">February 2026</p>
               </div>
               <div className="bg-card/30 backdrop-blur-sm p-6 rounded-xl border border-white/10">
                 <p className="text-xs uppercase font-bold text-primary tracking-widest mb-2">Time</p>
