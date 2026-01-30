@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   description: 'Experience innovation in motion. Register for the Kinetic Art Super Computer event - a convergence of technology and art.',
   generator: 'v0.app',
   icons: {
-    icon: '/logo.png',
+    icon: '/logo2.png',
   },
 }
 
