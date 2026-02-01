@@ -36,6 +36,19 @@ export default function RegistrationForm({ onSuccess }: RegistrationFormProps) {
     setError('');
   };
 
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    // Only allow numbers and '+' character
+    const filteredValue = value.replace(/[^0-9+]/g, '');
+    setFormData((prev) => ({ ...prev, phone: filteredValue }));
+    setError('');
+  };
+
+  const handleClear = () => {
+    setFormData({ fullName: '', email: '', college: '', phone: '' });
+    setError('');
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
@@ -179,7 +192,7 @@ export default function RegistrationForm({ onSuccess }: RegistrationFormProps) {
               type="tel"
               placeholder="+91 XXXXX XXXXX"
               value={formData.phone}
-              onChange={handleChange}
+              onChange={handlePhoneChange}
               required
               className="bg-white/5 border border-white/20 text-white placeholder-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all rounded-lg"
             />
@@ -191,14 +204,24 @@ export default function RegistrationForm({ onSuccess }: RegistrationFormProps) {
             </div>
           )}
 
-          {/* Register Button */}
-          <Button
-            type="submit"
-            disabled={isLoading}
-            className="w-full btn-gradient text-white font-bold py-3 rounded-lg disabled:opacity-50 transition-all uppercase tracking-wider"
-          >
-            {isLoading ? 'Registering...' : 'Register Now'}
-          </Button>
+          {/* Buttons */}
+          <div className="flex flex-col md:flex-row gap-3">
+            <Button
+              type="submit"
+              disabled={isLoading}
+              className="flex-1 btn-gradient text-white font-bold py-3 rounded-lg disabled:opacity-50 transition-all uppercase tracking-wider"
+            >
+              {isLoading ? 'Registering...' : 'Register Now'}
+            </Button>
+            <Button
+              type="button"
+              onClick={handleClear}
+              disabled={isLoading}
+              className="bg-white/10 hover:bg-white/20 text-white font-bold py-3 px-6 rounded-lg disabled:opacity-50 transition-all uppercase tracking-wider border border-white/20"
+            >
+              Clear
+            </Button>
+          </div>
 
           <p className="text-center text-xs text-muted-foreground/80 pt-2">
             All registrations are secure and confidential
