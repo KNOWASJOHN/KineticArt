@@ -1,16 +1,63 @@
+'use client';
+
+import { useEffect, useRef } from 'react';
+
 export default function CertificateSection() {
+    const videoRef = useRef<HTMLVideoElement>(null);
+
+    useEffect(() => {
+        const video = videoRef.current;
+        if (!video) return;
+
+        // Create Intersection Observer
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        // Video is visible, attempt to play
+                        const playPromise = video.play();
+
+                        if (playPromise !== undefined) {
+                            playPromise.catch((error) => {
+                                // Autoplay was prevented
+                                console.log('Autoplay prevented:', error);
+                                // Video will show poster image instead
+                            });
+                        }
+                    } else {
+                        // Video is not visible, pause it
+                        video.pause();
+                    }
+                });
+            },
+            {
+                threshold: 0.5, // Play when 50% of video is visible
+                rootMargin: '0px'
+            }
+        );
+
+        // Start observing the video element
+        observer.observe(video);
+
+        // Cleanup
+        return () => {
+            observer.disconnect();
+        };
+    }, []);
+
     return (
         <div className="bg-card/30 backdrop-blur-sm p-6 md:p-8 rounded-xl border border-white/10">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-center">
                 {/* Certificate Video */}
                 <div className="relative rounded-lg overflow-hidden bg-black/50 border border-primary/20">
                     <video
+                        ref={videoRef}
                         src="/certificate.mp4"
                         poster="/certificate.jpg"
-                        autoPlay
                         loop
                         muted
                         playsInline
+                        preload="metadata"
                         className="w-full h-auto"
                     />
                 </div>
