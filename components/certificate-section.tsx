@@ -23,8 +23,8 @@ export default function CertificateSection() {
                             Certificate of <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Participation</span>
                         </h2>
                     </div>
-                    <p className="text-base text-muted-foreground leading-relaxed">
-                        Awarded to individuals who actively participated in the technical event conducted as part of the Tech Fest organized by the Department of Computer Science & Engineering, Christ College of Engineering.
+                    <p className="text-base text-muted-foreground leading-loose">
+                        Awarded to individuals who actively participated in the<img src="/kinetic.png" className="inline-block w-28 m-1 pb-1" />event conducted as part of<span className="font-orbitron tracking-wide"> <img src="/techletics-logo.png" className="inline-block w-9"/><span className="text-[#c9a55c]">TECH</span>LETICS<span className="text-[#c9a55c]">'26</span> </span>organized by the Department of Computer Science & Engineering, Christ College of Engineering.
                     </p>
                     <div className="pt-2">
                         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/10 border border-primary/30">

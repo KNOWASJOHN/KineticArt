@@ -43,7 +43,7 @@ export default function Home() {
                 </span>
               </h1>
               <div className="h-px w-24 md:w-48 bg-gradient-to-r from-transparent via-primary to-transparent my-6 mx-auto lg:mx-0"></div>
-              <p className="text-2xl font-light text-muted-foreground mb-6 tracking-wide">Supercomputer in Motion</p>
+              <p className="text-2xl font-poppins font-semibold text-muted-foreground mb-6 tracking-normal">Supercomputer in Motion</p>
             </div>
 
             {/* Description */}

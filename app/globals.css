@@ -3,6 +3,14 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@font-face {
+  font-family: 'Orbitron';
+  src: url('/fonts/orbitron-bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --background: #9b8dd9;
   --foreground: #ffffff;
@@ -119,6 +127,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -168,12 +177,18 @@
     box-shadow: 0 0 50px rgba(194, 100, 200, 0.6);
     transform: scale(1.05);
   }
+
+  .font-orbitron {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+  }
 }
 
 @keyframes fade-in {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -184,6 +199,7 @@
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -191,9 +207,12 @@
 }
 
 @keyframes pulse-gentle {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.8;
   }
