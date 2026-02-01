@@ -6,6 +6,7 @@ export default function CertificateSection() {
                 <div className="relative rounded-lg overflow-hidden bg-black/50 border border-primary/20">
                     <video
                         src="/certificate.mp4"
+                        poster="/certificate.jpg"
                         autoPlay
                         loop
                         muted
