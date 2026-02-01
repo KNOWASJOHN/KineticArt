@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import RegistrationForm from '@/components/registration-form';
 import SuccessOverlay from '@/components/success-overlay';
+import CertificateSection from '@/components/certificate-section';
 
 export default function Home() {
   const [showSuccess, setShowSuccess] = useState(false);
@@ -61,9 +62,8 @@ export default function Home() {
             <RegistrationForm onSuccess={handleRegistrationSuccess} />
           </div>
 
-          {/* 3. Button & Info Cards (Mobile: Bottom, Desktop: Bottom-Left) */}
-          <div className="animate-slide-up space-y-8 order-3 lg:col-start-1 lg:row-start-2 flex flex-col items-center lg:items-start text-center lg:text-left" style={{ animationDelay: '0.2s' }}>
-            {/* View Participants Button */}
+          {/* 3. View Participants Button (Mobile: Middle, Desktop: Bottom-Left) */}
+          <div className="animate-slide-up order-3 lg:col-start-1 lg:row-start-2 flex flex-col items-center lg:items-start text-center lg:text-left" style={{ animationDelay: '0.2s' }}>
             <div className="pt-2">
               <Link
                 href="/participants"
@@ -72,9 +72,12 @@ export default function Home() {
                 View Registered Participants
               </Link>
             </div>
+          </div>
 
+          {/* 4. Event Details Grid (Mobile: After Button, Desktop: Full Width Row 3) */}
+          <div className="animate-slide-up order-4 lg:col-span-2 lg:row-start-3 flex flex-col items-center lg:items-start text-center lg:text-left" style={{ animationDelay: '0.3s' }}>
             {/* Event Details Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 w-full">
               <div className="bg-card/30 backdrop-blur-sm p-6 rounded-xl border border-white/10">
                 <p className="text-xs uppercase font-bold text-primary tracking-widest mb-2">Date</p>
                 <p className="text-xl font-semibold text-white">4th & 5th</p>
@@ -91,9 +94,14 @@ export default function Home() {
               </div>
               <div className="bg-card/30 backdrop-blur-sm p-6 rounded-xl border border-white/10">
                 <p className="text-xs uppercase font-bold text-primary tracking-widest mb-2">Tagline</p>
-                <p className="text-sm text-white font-medium">See the system. Understand the speed.</p>
+                <p className="text-xl font-semibold text-white">See the system. Understand the speed.</p>
               </div>
             </div>
+          </div>
+
+          {/* 5. Certificate Section (Mobile: After Info Cards, Desktop: Full Width Row 4) */}
+          <div className="animate-slide-up space-y-6 order-5 lg:col-span-2 lg:row-start-4" style={{ animationDelay: '0.4s' }}>
+            <CertificateSection />
           </div>
         </div>
       </div>
