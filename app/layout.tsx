@@ -4,7 +4,7 @@ import { Poppins, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
-const poppins = Poppins({ 
+const poppins = Poppins({
   weight: ['400', '500', '600', '700', '800'],
   subsets: ["latin"],
   variable: '--font-poppins'

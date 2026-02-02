@@ -5,6 +5,7 @@ import Link from 'next/link';
 import RegistrationForm from '@/components/registration-form';
 import SuccessOverlay from '@/components/success-overlay';
 import CertificateSection from '@/components/certificate-section';
+import SponsorsSection from '@/components/sponsors-section';
 
 export default function Home() {
   const [showSuccess, setShowSuccess] = useState(false);
@@ -102,6 +103,11 @@ export default function Home() {
           {/* 5. Certificate Section (Mobile: After Info Cards, Desktop: Full Width Row 4) */}
           <div className="animate-slide-up space-y-6 order-5 lg:col-span-2 lg:row-start-4" style={{ animationDelay: '0.4s' }}>
             <CertificateSection />
+          </div>
+
+          {/* 6. Sponsors Section (Mobile: After Certificate, Desktop: Full Width Row 5) */}
+          <div className="animate-slide-up space-y-6 order-6 lg:col-span-2 lg:row-start-5" style={{ animationDelay: '0.5s' }}>
+            <SponsorsSection />
           </div>
         </div>
       </div>
