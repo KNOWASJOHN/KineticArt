@@ -227,6 +227,39 @@ export default function RegistrationForm({ onSuccess }: RegistrationFormProps) {
             All registrations are secure and confidential
           </p>
         </form>
+
+        {/* Official Registration Section */}
+        <div className="mt-8 pt-8 border-t border-white/10">
+          <div className="text-center space-y-4">
+            <h2 className="text-md font-semibold tracking-wide text-white uppercase">
+              Official <span className="font-orbitron tracking-wide"> <img src="/techletics-logo.png" className="inline-block w-7" /><span className="text-[#c9a55c]">TECH</span>LETICS<span className="text-[#c9a55c]">'26</span></span> - Event Registration Form
+            </h2>
+            <div className="flex justify-center">
+              <a
+                href="https://qrfy.io/O0wJlH95eT"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:opacity-80 transition-opacity"
+              >
+                <img
+                  src="/reg_form/off_qr_code.jpeg"
+                  alt="Official Registration QR Code"
+                  className="w-40 rounded-lg border-2 border-white/20 elegant-shadow-lg cursor-pointer"
+                />
+              </a>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              <a
+                href="https://qrfy.io/O0wJlH95eT"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-primary transition-colors underline"
+              >
+                Register in the official form
+              </a>
+            </p>
+          </div>
+        </div>
       </div>
     </Card>
   );
