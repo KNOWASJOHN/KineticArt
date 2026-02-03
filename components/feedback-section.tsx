@@ -21,6 +21,7 @@ export default function FeedbackSection() {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -67,7 +68,11 @@ export default function FeedbackSection() {
 
     return (
         <div className="bg-card/30 backdrop-blur-sm p-3 sm:p-4 md:p-5 rounded-xl border border-white/10">
-            <div className="relative bg-black/50 backdrop-blur-sm rounded-lg border border-primary/20 p-3 sm:p-4 md:p-5 lg:p-6 transition-all duration-500 overflow-hidden">
+            <div
+                className="group relative bg-black/50 backdrop-blur-sm rounded-lg border border-primary/20 p-3 sm:p-4 md:p-5 lg:p-6 transition-all duration-500 overflow-hidden hover:border-primary/50 hover:bg-black/70"
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+            >
                 {/* Header */}
                 <div className="text-center space-y-1.5 sm:space-y-2 mb-4 sm:mb-5">
                     {/* Icon */}
@@ -173,8 +178,13 @@ export default function FeedbackSection() {
                     </Button>
                 </form>
 
-                {/* Decorative glow effect */}
-                <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-primary/0 via-primary/3 to-secondary/0 opacity-50 pointer-events-none" />
+                {/* Hover glow effect */}
+                <div className={`absolute inset-0 rounded-lg bg-gradient-to-r from-primary/0 via-primary/5 to-secondary/0 transition-opacity duration-300 pointer-events-none ${isHovered ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`} />
+
+                {/* Light sweep effect */}
+                <div className={`absolute inset-0 transition-transform duration-1000 ease-in-out pointer-events-none ${isHovered ? 'translate-x-full' : '-translate-x-full group-hover:translate-x-full'}`}>
+                    <div className="h-full w-3/4 sm:w-2/3 md:w-1/2 lg:w-2/5 xl:w-1/3 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12" />
+                </div>
             </div>
         </div>
     );
