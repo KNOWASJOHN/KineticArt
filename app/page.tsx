@@ -70,20 +70,8 @@ export default function Home() {
             <RegistrationForm onSuccess={handleRegistrationSuccess} />
           </div>
 
-          {/* 3. View Participants Button (Mobile: Middle, Desktop: Bottom-Left) */}
-          <div className="animate-slide-up order-3 lg:col-start-1 lg:row-start-2 flex flex-col items-center lg:items-start text-center lg:text-left" style={{ animationDelay: '0.2s' }}>
-            <div className="pt-2">
-              <Link
-                href="/participants"
-                className="inline-flex items-center justify-center px-8 py-3 rounded-lg font-semibold text-white btn-gradient"
-              >
-                View Registered Participants
-              </Link>
-            </div>
-          </div>
-
-          {/* 4. Event Details Grid (Mobile: After Button, Desktop: Full Width Row 3) */}
-          <div className="animate-slide-up order-4 lg:col-span-2 lg:row-start-3 flex flex-col items-center lg:items-start text-center lg:text-left" style={{ animationDelay: '0.3s' }}>
+          {/* 3. Event Details Grid (Mobile: After Title, Desktop: Full Width Row 3) */}
+          <div className="animate-slide-up order-3 lg:col-span-2 lg:row-start-3 flex flex-col items-center lg:items-start text-center lg:text-left" style={{ animationDelay: '0.2s' }}>
             {/* Event Details Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 w-full">
               {/* Date Card */}
@@ -168,20 +156,30 @@ export default function Home() {
                 </div>
               </div>
             </div>
+
+            {/* View Participants Button - Centered below event cards */}
+            <div className="w-full flex justify-center mt-8">
+              <Link
+                href="/participants"
+                className="inline-flex items-center justify-center px-8 py-3 rounded-lg font-semibold text-white btn-gradient hover:scale-105 transition-transform"
+              >
+                View Registered Participants
+              </Link>
+            </div>
           </div>
 
-          {/* 5. Certificate Section (Mobile: After Info Cards, Desktop: Full Width Row 4) */}
-          <div className="animate-slide-up space-y-6 order-5 lg:col-span-2 lg:row-start-4" style={{ animationDelay: '0.4s' }}>
+          {/* 4. Certificate Section (Mobile: After Info Cards, Desktop: Full Width Row 4) */}
+          <div className="animate-slide-up space-y-6 order-4 lg:col-span-2 lg:row-start-4" style={{ animationDelay: '0.3s' }}>
             <CertificateSection />
           </div>
 
-          {/* 6. Sponsors Section (Mobile: After Certificate, Desktop: Full Width Row 5) */}
-          <div className="animate-slide-up space-y-6 order-6 lg:col-span-2 lg:row-start-5" style={{ animationDelay: '0.5s' }}>
+          {/* 5. Sponsors Section (Mobile: After Certificate, Desktop: Full Width Row 5) */}
+          <div className="animate-slide-up space-y-6 order-5 lg:col-span-2 lg:row-start-5" style={{ animationDelay: '0.4s' }}>
             <SponsorsSection />
           </div>
 
-          {/* 7. Feedback Section (Mobile: After Sponsors, Desktop: Full Width Row 6) */}
-          <div className="animate-slide-up space-y-6 order-7 lg:col-span-2 lg:row-start-6" style={{ animationDelay: '0.6s' }}>
+          {/* 6. Feedback Section (Mobile: After Sponsors, Desktop: Full Width Row 6) */}
+          <div className="animate-slide-up space-y-6 order-6 lg:col-span-2 lg:row-start-6" style={{ animationDelay: '0.5s' }}>
             <FeedbackSection />
           </div>
         </div>
