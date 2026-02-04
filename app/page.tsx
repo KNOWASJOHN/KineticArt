@@ -21,7 +21,10 @@ export default function Home() {
   };
 
   const handleCardClick = (cardId: string) => {
-    setActiveCard(activeCard === cardId ? null : cardId);
+    // Only allow click on touch devices (mobile)
+    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+      setActiveCard(activeCard === cardId ? null : cardId);
+    }
   };
 
   return (

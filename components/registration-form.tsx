@@ -38,7 +38,7 @@ export default function RegistrationForm({ onSuccess }: RegistrationFormProps) {
     const currentHour = now.getHours();
     const currentMinute = now.getMinutes();
     const currentTimeInMinutes = currentHour * 60 + currentMinute;
-    const startTime = 9 * 60; // 9:00 AM
+    const startTime = 9 * 60 + 30; // 9:30 AM
     const endTime = 16 * 60 + 30; // 4:30 PM
 
     return currentTimeInMinutes >= startTime && currentTimeInMinutes < endTime;
@@ -114,11 +114,11 @@ export default function RegistrationForm({ onSuccess }: RegistrationFormProps) {
     const currentHour = now.getHours();
     const currentMinute = now.getMinutes();
     const currentTimeInMinutes = currentHour * 60 + currentMinute;
-    const startTime = 9 * 60; // 9:00 AM in minutes
+    const startTime = 9 * 60 + 30; // 9:30 AM in minutes
     const endTime = 16 * 60 + 30; // 4:30 PM in minutes
 
     if (currentTimeInMinutes < startTime || currentTimeInMinutes >= endTime) {
-      setError('Registration is only available between 9:00 AM and 4:30 PM. Please try again during these hours.');
+      setError('Registration is only available between 9:30 AM and 4:30 PM. Please try again during these hours.');
       return;
     }
 
@@ -290,7 +290,7 @@ export default function RegistrationForm({ onSuccess }: RegistrationFormProps) {
                   Registration Currently Closed
                 </h3>
                 <p className="text-xs sm:text-sm text-muted-foreground">
-                  Registration is only available between <span className="text-primary font-semibold whitespace-nowrap">9:00 AM</span> and <span className="text-primary font-semibold whitespace-nowrap">4:30 PM</span>
+                  Registration is only available between <span className="text-primary font-semibold whitespace-nowrap">9:30 AM</span> and <span className="text-primary font-semibold whitespace-nowrap">4:30 PM</span>
                 </p>
                 <p className="text-xs text-muted-foreground/80 mt-1 hidden sm:block">
                   Please return during these hours to complete your registration
