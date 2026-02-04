@@ -20,11 +20,9 @@ export default function Home() {
     setShowSuccess(false);
   };
 
-  const handleCardClick = (cardId: string) => {
-    // Only allow click on touch devices (mobile)
-    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
-      setActiveCard(activeCard === cardId ? null : cardId);
-    }
+  // Handle touch events only (not mouse clicks)
+  const handleCardTouch = (cardId: string) => {
+    setActiveCard(activeCard === cardId ? null : cardId);
   };
 
   return (
@@ -90,9 +88,9 @@ export default function Home() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 w-full">
               {/* Date Card */}
               <div
-                className={`group relative bg-card/30 backdrop-blur-sm p-6 rounded-xl border border-white/10 transition-all duration-300 overflow-hidden cursor-pointer touch-manipulation ${activeCard === 'date' ? 'border-primary/30 bg-card/40' : 'hover:border-primary/30 hover:bg-card/40'
+                className={`group relative bg-card/30 backdrop-blur-sm p-6 rounded-xl border border-white/10 transition-all duration-300 overflow-hidden ${activeCard === 'date' ? 'border-primary/30 bg-card/40' : 'hover:border-primary/30 hover:bg-card/40'
                   }`}
-                onClick={() => handleCardClick('date')}
+                onTouchEnd={() => handleCardTouch('date')}
               >
                 <p className="text-xs uppercase font-bold text-primary tracking-widest mb-2">Date</p>
                 <p className="text-xl font-semibold text-white">4th & 5th</p>
@@ -111,9 +109,9 @@ export default function Home() {
 
               {/* Time Card */}
               <div
-                className={`group relative bg-card/30 backdrop-blur-sm p-6 rounded-xl border border-white/10 transition-all duration-300 overflow-hidden cursor-pointer touch-manipulation ${activeCard === 'time' ? 'border-primary/30 bg-card/40' : 'hover:border-primary/30 hover:bg-card/40'
+                className={`group relative bg-card/30 backdrop-blur-sm p-6 rounded-xl border border-white/10 transition-all duration-300 overflow-hidden ${activeCard === 'time' ? 'border-primary/30 bg-card/40' : 'hover:border-primary/30 hover:bg-card/40'
                   }`}
-                onClick={() => handleCardClick('time')}
+                onTouchEnd={() => handleCardTouch('time')}
               >
                 <p className="text-xs uppercase font-bold text-primary tracking-widest mb-2">Time</p>
                 <p className="text-xl font-semibold text-white">9:30 AM - 4:30 PM</p>
@@ -131,9 +129,9 @@ export default function Home() {
 
               {/* Venue Card */}
               <div
-                className={`group relative bg-card/30 backdrop-blur-sm p-6 rounded-xl border border-white/10 transition-all duration-300 overflow-hidden cursor-pointer touch-manipulation ${activeCard === 'venue' ? 'border-primary/30 bg-card/40' : 'hover:border-primary/30 hover:bg-card/40'
+                className={`group relative bg-card/30 backdrop-blur-sm p-6 rounded-xl border border-white/10 transition-all duration-300 overflow-hidden ${activeCard === 'venue' ? 'border-primary/30 bg-card/40' : 'hover:border-primary/30 hover:bg-card/40'
                   }`}
-                onClick={() => handleCardClick('venue')}
+                onTouchEnd={() => handleCardTouch('venue')}
               >
                 <p className="text-xs uppercase font-bold text-primary tracking-widest mb-2">Venue</p>
                 <p className="text-xl font-semibold text-white">Software Lab</p>
@@ -152,9 +150,9 @@ export default function Home() {
 
               {/* Tagline Card */}
               <div
-                className={`group relative bg-card/30 backdrop-blur-sm p-6 rounded-xl border border-white/10 transition-all duration-300 overflow-hidden cursor-pointer touch-manipulation ${activeCard === 'tagline' ? 'border-primary/30 bg-card/40' : 'hover:border-primary/30 hover:bg-card/40'
+                className={`group relative bg-card/30 backdrop-blur-sm p-6 rounded-xl border border-white/10 transition-all duration-300 overflow-hidden ${activeCard === 'tagline' ? 'border-primary/30 bg-card/40' : 'hover:border-primary/30 hover:bg-card/40'
                   }`}
-                onClick={() => handleCardClick('tagline')}
+                onTouchEnd={() => handleCardTouch('tagline')}
               >
                 <p className="text-xs uppercase font-bold text-primary tracking-widest mb-2">Tagline</p>
                 <p className="text-xl font-semibold text-white">See the system. Understand the speed.</p>
