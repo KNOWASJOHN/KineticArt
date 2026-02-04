@@ -65,13 +65,13 @@ export default function Home() {
             </div>
           </div>
 
-          {/* 2. Registration Form (Mobile: Middle, Desktop: Right - Spanning 2 Rows) */}
-          <div className="animate-slide-up order-2 lg:col-start-2 lg:row-start-1 lg:row-span-2" style={{ animationDelay: '0.1s' }}>
+          {/* 2. Registration Form (Mobile: After Description, Desktop: Right - Spanning 2 Rows) */}
+          <div className="animate-slide-up order-3 lg:order-2 lg:col-start-2 lg:row-start-1 lg:row-span-2" style={{ animationDelay: '0.1s' }}>
             <RegistrationForm onSuccess={handleRegistrationSuccess} />
           </div>
 
-          {/* 3. Event Details Grid (Mobile: After Title, Desktop: Full Width Row 3) */}
-          <div className="animate-slide-up order-3 lg:col-span-2 lg:row-start-3 flex flex-col items-center lg:items-start text-center lg:text-left" style={{ animationDelay: '0.2s' }}>
+          {/* 3. Event Details Grid (Mobile: After Title, Desktop: Left Below Description) */}
+          <div className="animate-slide-up order-2 lg:order-3 lg:col-start-1 lg:row-start-2 flex flex-col items-center lg:items-start text-center lg:text-left" style={{ animationDelay: '0.2s' }}>
             {/* Event Details Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 w-full">
               {/* Date Card */}
@@ -168,18 +168,18 @@ export default function Home() {
             </div>
           </div>
 
-          {/* 4. Certificate Section (Mobile: After Info Cards, Desktop: Full Width Row 4) */}
-          <div className="animate-slide-up space-y-6 order-4 lg:col-span-2 lg:row-start-4" style={{ animationDelay: '0.3s' }}>
+          {/* 4. Certificate Section (Mobile: After Info Cards, Desktop: Full Width Row 3) */}
+          <div className="animate-slide-up space-y-6 order-4 lg:col-span-2 lg:row-start-3" style={{ animationDelay: '0.3s' }}>
             <CertificateSection />
           </div>
 
-          {/* 5. Sponsors Section (Mobile: After Certificate, Desktop: Full Width Row 5) */}
-          <div className="animate-slide-up space-y-6 order-5 lg:col-span-2 lg:row-start-5" style={{ animationDelay: '0.4s' }}>
+          {/* 5. Sponsors Section (Mobile: After Certificate, Desktop: Full Width Row 4) */}
+          <div className="animate-slide-up space-y-6 order-5 lg:col-span-2 lg:row-start-4" style={{ animationDelay: '0.4s' }}>
             <SponsorsSection />
           </div>
 
-          {/* 6. Feedback Section (Mobile: After Sponsors, Desktop: Full Width Row 6) */}
-          <div className="animate-slide-up space-y-6 order-6 lg:col-span-2 lg:row-start-6" style={{ animationDelay: '0.5s' }}>
+          {/* 6. Feedback Section (Mobile: After Sponsors, Desktop: Full Width Row 5) */}
+          <div className="animate-slide-up space-y-6 order-6 lg:col-span-2 lg:row-start-5" style={{ animationDelay: '0.5s' }}>
             <FeedbackSection />
           </div>
         </div>
