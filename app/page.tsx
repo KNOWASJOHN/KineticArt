@@ -10,6 +10,7 @@ import FeedbackSection from '@/components/feedback-section';
 
 export default function Home() {
   const [showSuccess, setShowSuccess] = useState(false);
+  const [activeCard, setActiveCard] = useState<string | null>(null);
 
   const handleRegistrationSuccess = () => {
     setShowSuccess(true);
@@ -17,6 +18,10 @@ export default function Home() {
 
   const handleCloseSuccess = () => {
     setShowSuccess(false);
+  };
+
+  const handleCardClick = (cardId: string) => {
+    setActiveCard(activeCard === cardId ? null : cardId);
   };
 
   return (
@@ -80,23 +85,86 @@ export default function Home() {
           <div className="animate-slide-up order-4 lg:col-span-2 lg:row-start-3 flex flex-col items-center lg:items-start text-center lg:text-left" style={{ animationDelay: '0.3s' }}>
             {/* Event Details Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 w-full">
-              <div className="bg-card/30 backdrop-blur-sm p-6 rounded-xl border border-white/10">
+              {/* Date Card */}
+              <div
+                className={`group relative bg-card/30 backdrop-blur-sm p-6 rounded-xl border border-white/10 transition-all duration-300 overflow-hidden cursor-pointer touch-manipulation ${activeCard === 'date' ? 'border-primary/30 bg-card/40' : 'hover:border-primary/30 hover:bg-card/40'
+                  }`}
+                onClick={() => handleCardClick('date')}
+              >
                 <p className="text-xs uppercase font-bold text-primary tracking-widest mb-2">Date</p>
                 <p className="text-xl font-semibold text-white">4th & 5th</p>
                 <p className="text-sm text-muted-foreground">February 2026</p>
+
+                {/* Hover/Active glow effect */}
+                <div className={`absolute inset-0 rounded-xl bg-gradient-to-r from-primary/0 via-primary/5 to-secondary/0 transition-opacity duration-300 pointer-events-none ${activeCard === 'date' ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                  }`} />
+
+                {/* Light sweep effect */}
+                <div className={`absolute inset-0 transition-transform duration-1000 ease-in-out pointer-events-none ${activeCard === 'date' ? 'translate-x-full' : '-translate-x-full group-hover:translate-x-full'
+                  }`}>
+                  <div className="h-full w-3/4 sm:w-2/3 md:w-1/2 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12" />
+                </div>
               </div>
-              <div className="bg-card/30 backdrop-blur-sm p-6 rounded-xl border border-white/10">
+
+              {/* Time Card */}
+              <div
+                className={`group relative bg-card/30 backdrop-blur-sm p-6 rounded-xl border border-white/10 transition-all duration-300 overflow-hidden cursor-pointer touch-manipulation ${activeCard === 'time' ? 'border-primary/30 bg-card/40' : 'hover:border-primary/30 hover:bg-card/40'
+                  }`}
+                onClick={() => handleCardClick('time')}
+              >
                 <p className="text-xs uppercase font-bold text-primary tracking-widest mb-2">Time</p>
                 <p className="text-xl font-semibold text-white">9:30 AM - 4:30 PM</p>
+
+                {/* Hover/Active glow effect */}
+                <div className={`absolute inset-0 rounded-xl bg-gradient-to-r from-primary/0 via-primary/5 to-secondary/0 transition-opacity duration-300 pointer-events-none ${activeCard === 'time' ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                  }`} />
+
+                {/* Light sweep effect */}
+                <div className={`absolute inset-0 transition-transform duration-1000 ease-in-out pointer-events-none ${activeCard === 'time' ? 'translate-x-full' : '-translate-x-full group-hover:translate-x-full'
+                  }`}>
+                  <div className="h-full w-3/4 sm:w-2/3 md:w-1/2 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12" />
+                </div>
               </div>
-              <div className="bg-card/30 backdrop-blur-sm p-6 rounded-xl border border-white/10">
+
+              {/* Venue Card */}
+              <div
+                className={`group relative bg-card/30 backdrop-blur-sm p-6 rounded-xl border border-white/10 transition-all duration-300 overflow-hidden cursor-pointer touch-manipulation ${activeCard === 'venue' ? 'border-primary/30 bg-card/40' : 'hover:border-primary/30 hover:bg-card/40'
+                  }`}
+                onClick={() => handleCardClick('venue')}
+              >
                 <p className="text-xs uppercase font-bold text-primary tracking-widest mb-2">Venue</p>
                 <p className="text-xl font-semibold text-white">Software Lab</p>
                 <p className="text-sm text-muted-foreground">St. Mary's Block</p>
+
+                {/* Hover/Active glow effect */}
+                <div className={`absolute inset-0 rounded-xl bg-gradient-to-r from-primary/0 via-primary/5 to-secondary/0 transition-opacity duration-300 pointer-events-none ${activeCard === 'venue' ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                  }`} />
+
+                {/* Light sweep effect */}
+                <div className={`absolute inset-0 transition-transform duration-1000 ease-in-out pointer-events-none ${activeCard === 'venue' ? 'translate-x-full' : '-translate-x-full group-hover:translate-x-full'
+                  }`}>
+                  <div className="h-full w-3/4 sm:w-2/3 md:w-1/2 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12" />
+                </div>
               </div>
-              <div className="bg-card/30 backdrop-blur-sm p-6 rounded-xl border border-white/10">
+
+              {/* Tagline Card */}
+              <div
+                className={`group relative bg-card/30 backdrop-blur-sm p-6 rounded-xl border border-white/10 transition-all duration-300 overflow-hidden cursor-pointer touch-manipulation ${activeCard === 'tagline' ? 'border-primary/30 bg-card/40' : 'hover:border-primary/30 hover:bg-card/40'
+                  }`}
+                onClick={() => handleCardClick('tagline')}
+              >
                 <p className="text-xs uppercase font-bold text-primary tracking-widest mb-2">Tagline</p>
                 <p className="text-xl font-semibold text-white">See the system. Understand the speed.</p>
+
+                {/* Hover/Active glow effect */}
+                <div className={`absolute inset-0 rounded-xl bg-gradient-to-r from-primary/0 via-primary/5 to-secondary/0 transition-opacity duration-300 pointer-events-none ${activeCard === 'tagline' ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                  }`} />
+
+                {/* Light sweep effect */}
+                <div className={`absolute inset-0 transition-transform duration-1000 ease-in-out pointer-events-none ${activeCard === 'tagline' ? 'translate-x-full' : '-translate-x-full group-hover:translate-x-full'
+                  }`}>
+                  <div className="h-full w-3/4 sm:w-2/3 md:w-1/2 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12" />
+                </div>
               </div>
             </div>
           </div>
