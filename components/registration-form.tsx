@@ -265,14 +265,14 @@ export default function RegistrationForm({ onSuccess }: RegistrationFormProps) {
 
   return (
     <Card className="w-full bg-card/50 elegant-border backdrop-blur-md border-2 elegant-shadow-lg">
-      <div className="p-8">
+      <div className="p-4 sm:p-6 lg:p-8">
         {/* Registration Closed Banner */}
         {!isRegistrationOpen && (
-          <div className="mb-6 p-6 rounded-xl bg-gradient-to-r from-primary/20 via-secondary/20 to-primary/20 border-2 border-primary/40 backdrop-blur-sm animate-pulse-gentle">
-            <div className="flex items-center gap-4">
-              <div className="flex-shrink-0">
+          <div className="mb-4 sm:mb-6 p-4 sm:p-6 rounded-lg sm:rounded-xl bg-gradient-to-r from-primary/20 via-secondary/20 to-primary/20 border-2 border-primary/40 backdrop-blur-sm animate-pulse-gentle">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
+              <div className="flex-shrink-0 self-center sm:self-auto">
                 <svg
-                  className="w-12 h-12 text-primary"
+                  className="w-10 h-10 sm:w-12 sm:h-12 text-primary"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -285,14 +285,14 @@ export default function RegistrationForm({ onSuccess }: RegistrationFormProps) {
                   />
                 </svg>
               </div>
-              <div className="flex-1">
-                <h3 className="text-xl font-bold text-white mb-1 uppercase tracking-wide">
+              <div className="flex-1 text-center sm:text-left">
+                <h3 className="text-lg sm:text-xl font-bold text-white mb-1 uppercase tracking-wide">
                   Registration Currently Closed
                 </h3>
-                <p className="text-sm text-muted-foreground">
-                  Registration is only available between <span className="text-primary font-semibold">9:00 AM</span> and <span className="text-primary font-semibold">4:30 PM</span>
+                <p className="text-xs sm:text-sm text-muted-foreground">
+                  Registration is only available between <span className="text-primary font-semibold whitespace-nowrap">9:00 AM</span> and <span className="text-primary font-semibold whitespace-nowrap">4:30 PM</span>
                 </p>
-                <p className="text-xs text-muted-foreground/80 mt-1">
+                <p className="text-xs text-muted-foreground/80 mt-1 hidden sm:block">
                   Please return during these hours to complete your registration
                 </p>
               </div>
