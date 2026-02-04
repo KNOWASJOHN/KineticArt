@@ -2,6 +2,7 @@ import React from "react"
 import type { Metadata } from 'next'
 import { Poppins, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { Toaster } from '@/components/ui/sonner'
 import './globals.css'
 
 const poppins = Poppins({
@@ -30,6 +31,7 @@ export default function RootLayout({
       <body className={`${poppins.className} font-sans antialiased`}>
         {children}
         <Analytics />
+        <Toaster />
       </body>
     </html>
   )

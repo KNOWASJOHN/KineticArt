@@ -2,7 +2,7 @@
 
 import React from "react"
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -19,6 +19,8 @@ interface RegistrationFormProps {
   onSuccess?: () => void;
 }
 
+const STORAGE_KEY = 'kinetic_art_registration_draft';
+
 export default function RegistrationForm({ onSuccess }: RegistrationFormProps) {
   const [formData, setFormData] = useState<FormData>({
     fullName: '',
@@ -27,8 +29,56 @@ export default function RegistrationForm({ onSuccess }: RegistrationFormProps) {
     phone: '',
   });
 
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [isRegistrationOpen, setIsRegistrationOpen] = useState(true);
+
+  // Check if registration is currently open based on time
+  const checkRegistrationHours = () => {
+    const now = new Date();
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+    const currentTimeInMinutes = currentHour * 60 + currentMinute;
+    const startTime = 9 * 60; // 9:00 AM
+    const endTime = 16 * 60 + 30; // 4:30 PM
+
+    return currentTimeInMinutes >= startTime && currentTimeInMinutes < endTime;
+  };
+
+  // Check registration hours on mount and every minute
+  useEffect(() => {
+    setIsRegistrationOpen(checkRegistrationHours());
+
+    const interval = setInterval(() => {
+      setIsRegistrationOpen(checkRegistrationHours());
+    }, 60000); // Check every minute
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Load saved form data from localStorage on mount
+  useEffect(() => {
+    try {
+      const savedData = localStorage.getItem(STORAGE_KEY);
+      if (savedData) {
+        const parsed = JSON.parse(savedData);
+        setFormData(parsed);
+      }
+    } catch (err) {
+      console.error('Failed to load saved form data:', err);
+    }
+  }, []);
+
+  // Save form data to localStorage whenever it changes
+  useEffect(() => {
+    try {
+      // Only save if at least one field has data
+      if (formData.fullName || formData.email || formData.college || formData.phone) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
+      }
+    } catch (err) {
+      console.error('Failed to save form data:', err);
+    }
+  }, [formData]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -47,78 +97,209 @@ export default function RegistrationForm({ onSuccess }: RegistrationFormProps) {
   const handleClear = () => {
     setFormData({ fullName: '', email: '', college: '', phone: '' });
     setError('');
+    // Clear saved data from localStorage
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch (err) {
+      console.error('Failed to clear saved form data:', err);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true);
     setError('');
 
+    // Check if current time is within allowed registration hours (9:00 AM - 4:30 PM)
+    const now = new Date();
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+    const currentTimeInMinutes = currentHour * 60 + currentMinute;
+    const startTime = 9 * 60; // 9:00 AM in minutes
+    const endTime = 16 * 60 + 30; // 4:30 PM in minutes
+
+    if (currentTimeInMinutes < startTime || currentTimeInMinutes >= endTime) {
+      setError('Registration is only available between 9:00 AM and 4:30 PM. Please try again during these hours.');
+      return;
+    }
+
+    // Validate email format before proceeding
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+
+    // Store form data for background processing
+    const submissionData = { ...formData };
+
+    // Save to localStorage as backup before clearing
     try {
-      const { createClient } = await import('@/utils/supabase/client');
-      const supabase = createClient();
+      localStorage.setItem(STORAGE_KEY + '_pending', JSON.stringify(submissionData));
+    } catch (err) {
+      console.error('Failed to save pending data:', err);
+    }
 
-      // Check if email already exists
-      const { data: existingUser } = await supabase
-        .from('participants')
-        .select('id')
-        .eq('email', formData.email)
-        .maybeSingle();
+    // Immediately show success screen and clear form
+    setFormData({ fullName: '', email: '', college: '', phone: '' });
+    onSuccess?.();
 
-      if (existingUser) {
-        throw new Error('This email is already registered.');
-      }
-
-      const { data, error: supabaseError } = await supabase
-        .from('participants')
-        .insert([
-          {
-            name: formData.fullName,
-            email: formData.email,
-            college: formData.college,
-            phone: formData.phone,
-          },
-        ])
-        .select()
-        .single();
-
-      if (supabaseError) throw supabaseError;
-
-      // Log submission (in real app, would send to backend)
-      console.log('[v0] Form submitted:', formData);
-
-      // Send confirmation email
+    // Validate registration in the background
+    (async () => {
       try {
-        const { error: funcError } = await supabase.functions.invoke('send-email', {
-          body: {
-            id: data.id,
-            name: formData.fullName,
-            email: formData.email,
-            college: formData.college,
+        const { createClient } = await import('@/utils/supabase/client');
+        const supabase = createClient();
+
+        // Check if email already exists
+        const { data: existingUser } = await supabase
+          .from('participants')
+          .select('id')
+          .eq('email', submissionData.email)
+          .maybeSingle();
+
+        if (existingUser) {
+          // Import toast dynamically
+          const { toast } = await import('sonner');
+          toast.error('Registration Failed', {
+            description: 'This email is already registered. Please use a different email.',
+            duration: 5000,
+          });
+
+          // Restore form data so user can edit
+          setFormData(submissionData);
+
+          // Clear pending data
+          try {
+            localStorage.removeItem(STORAGE_KEY + '_pending');
+          } catch (err) {
+            console.error('Failed to clear pending data:', err);
+          }
+
+          return;
+        }
+
+        const { data, error: supabaseError } = await supabase
+          .from('participants')
+          .insert([
+            {
+              name: submissionData.fullName,
+              email: submissionData.email,
+              college: submissionData.college,
+              phone: submissionData.phone,
+            },
+          ])
+          .select()
+          .single();
+
+        if (supabaseError) {
+          // Import toast dynamically
+          const { toast } = await import('sonner');
+          toast.error('Registration Failed', {
+            description: 'Failed to save your registration. Please try again.',
+            duration: 5000,
+            action: {
+              label: 'Retry',
+              onClick: () => {
+                // Restore form data
+                setFormData(submissionData);
+              },
+            },
+          });
+
+          console.error('Background registration error:', supabaseError);
+          return;
+        }
+
+        // Success! Show confirmation toast
+        const { toast } = await import('sonner');
+        toast.success('Registration Confirmed!', {
+          description: `Welcome, ${submissionData.fullName}! Check your email for confirmation.`,
+          duration: 4000,
+        });
+
+        // Clear saved draft and pending data from localStorage
+        try {
+          localStorage.removeItem(STORAGE_KEY);
+          localStorage.removeItem(STORAGE_KEY + '_pending');
+        } catch (err) {
+          console.error('Failed to clear saved form data:', err);
+        }
+
+        // Log submission
+        console.log('[v0] Form submitted successfully:', submissionData);
+
+        // Send confirmation email (don't block on this)
+        try {
+          const { error: funcError } = await supabase.functions.invoke('send-email', {
+            body: {
+              id: data.id,
+              name: submissionData.fullName,
+              email: submissionData.email,
+              college: submissionData.college,
+            },
+          });
+          if (funcError) {
+            console.error('Failed to send confirmation email:', funcError);
+          }
+        } catch (emailErr) {
+          console.error('Error invoking email function:', emailErr);
+        }
+      } catch (err: any) {
+        // Import toast dynamically
+        const { toast } = await import('sonner');
+        toast.error('Network Error', {
+          description: 'Could not connect to server. Please check your internet connection and try again.',
+          duration: 6000,
+          action: {
+            label: 'Retry',
+            onClick: () => {
+              // Restore form data
+              setFormData(submissionData);
+            },
           },
         });
-        if (funcError) {
-          console.error('Failed to send confirmation email:', funcError);
-          // We don't block success on email failure, just log it
-        }
-      } catch (emailErr) {
-        console.error('Error invoking email function:', emailErr);
-      }
 
-      // Reset form and call success callback
-      setFormData({ fullName: '', email: '', college: '', phone: '' });
-      onSuccess?.();
-    } catch (err: any) {
-      setError(err.message || 'Failed to register. Please try again.');
-      console.error('[v0] Registration error:', err);
-    } finally {
-      setIsLoading(false);
-    }
+        console.error('[v0] Background registration error:', err);
+      }
+    })();
   };
 
   return (
     <Card className="w-full bg-card/50 elegant-border backdrop-blur-md border-2 elegant-shadow-lg">
       <div className="p-8">
+        {/* Registration Closed Banner */}
+        {!isRegistrationOpen && (
+          <div className="mb-6 p-6 rounded-xl bg-gradient-to-r from-primary/20 via-secondary/20 to-primary/20 border-2 border-primary/40 backdrop-blur-sm animate-pulse-gentle">
+            <div className="flex items-center gap-4">
+              <div className="flex-shrink-0">
+                <svg
+                  className="w-12 h-12 text-primary"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-xl font-bold text-white mb-1 uppercase tracking-wide">
+                  Registration Currently Closed
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  Registration is only available between <span className="text-primary font-semibold">9:00 AM</span> and <span className="text-primary font-semibold">4:30 PM</span>
+                </p>
+                <p className="text-xs text-muted-foreground/80 mt-1">
+                  Please return during these hours to complete your registration
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Header */}
         <div className="mb-8">
           <h2 className="text-2xl font-bold tracking-wide text-white uppercase mb-2">
@@ -143,7 +324,8 @@ export default function RegistrationForm({ onSuccess }: RegistrationFormProps) {
               value={formData.fullName}
               onChange={handleChange}
               required
-              className="bg-white/5 border border-white/20 text-white placeholder-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all rounded-lg"
+              disabled={!isRegistrationOpen}
+              className="bg-white/5 border border-white/20 text-white placeholder-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
             />
           </div>
 
@@ -160,7 +342,8 @@ export default function RegistrationForm({ onSuccess }: RegistrationFormProps) {
               value={formData.email}
               onChange={handleChange}
               required
-              className="bg-white/5 border border-white/20 text-white placeholder-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all rounded-lg"
+              disabled={!isRegistrationOpen}
+              className="bg-white/5 border border-white/20 text-white placeholder-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
             />
           </div>
 
@@ -177,7 +360,8 @@ export default function RegistrationForm({ onSuccess }: RegistrationFormProps) {
               value={formData.college}
               onChange={handleChange}
               required
-              className="bg-white/5 border border-white/20 text-white placeholder-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all rounded-lg"
+              disabled={!isRegistrationOpen}
+              className="bg-white/5 border border-white/20 text-white placeholder-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
             />
           </div>
 
@@ -194,7 +378,8 @@ export default function RegistrationForm({ onSuccess }: RegistrationFormProps) {
               value={formData.phone}
               onChange={handlePhoneChange}
               required
-              className="bg-white/5 border border-white/20 text-white placeholder-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all rounded-lg"
+              disabled={!isRegistrationOpen}
+              className="bg-white/5 border border-white/20 text-white placeholder-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
             />
           </div>
 
@@ -208,16 +393,16 @@ export default function RegistrationForm({ onSuccess }: RegistrationFormProps) {
           <div className="flex flex-col md:flex-row gap-3">
             <Button
               type="submit"
-              disabled={isLoading}
-              className="flex-1 btn-gradient text-white font-bold py-3 rounded-lg disabled:opacity-50 transition-all uppercase tracking-wider"
+              disabled={!isRegistrationOpen}
+              className="flex-1 btn-gradient text-white font-bold py-3 rounded-lg transition-all uppercase tracking-wider disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoading ? 'Registering...' : 'Register Now'}
+              Register Now
             </Button>
             <Button
               type="button"
               onClick={handleClear}
-              disabled={isLoading}
-              className="bg-white/10 hover:bg-white/20 text-white font-bold py-3 px-6 rounded-lg disabled:opacity-50 transition-all uppercase tracking-wider border border-white/20"
+              disabled={!isRegistrationOpen}
+              className="bg-white/10 hover:bg-white/20 text-white font-bold py-3 px-6 rounded-lg transition-all uppercase tracking-wider border border-white/20 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Clear
             </Button>
