@@ -328,6 +328,42 @@ export default function RegistrationForm({ onSuccess }: RegistrationFormProps) {
             </div>
           </div>
         </div>
+
+        {/* Feedback Section Redirect */}
+        <div className="mt-8 pt-8 border-t border-white/10">
+          <div className="text-center space-y-4">
+            <div>
+              <p className="text-primary font-semibold text-sm mb-2 uppercase tracking-wider font-mono">Share Your Experience</p>
+              <h3 className="text-xl md:text-2xl font-bold text-white mb-3 leading-tight">
+                We'd Love to Hear Your <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Feedback</span>
+              </h3>
+            </div>
+            <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
+              Your thoughts and suggestions help us improve future events. Share your experience with us!
+            </p>
+            <div className="pt-2">
+              <button
+                onClick={() => {
+                  const feedbackSection = document.querySelector('#feedback-section');
+                  if (feedbackSection) {
+                    feedbackSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }
+                }}
+                className="relative inline-flex items-center gap-2 px-6 py-3 rounded-lg btn-gradient text-white font-bold uppercase tracking-wider transition-all hover:scale-105 group overflow-hidden"
+              >
+                <span className="relative z-10">Submit Feedback</span>
+                <svg className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+
+                {/* Light sweep effect */}
+                <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out pointer-events-none">
+                  <div className="h-full w-1/2 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12" />
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </Card>
   );

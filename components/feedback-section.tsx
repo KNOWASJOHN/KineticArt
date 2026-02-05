@@ -67,7 +67,7 @@ export default function FeedbackSection() {
     };
 
     return (
-        <div className="bg-card/30 backdrop-blur-sm p-3 sm:p-4 md:p-5 rounded-xl border border-white/10">
+        <div id="feedback-section" className="bg-card/30 backdrop-blur-sm p-3 sm:p-4 md:p-5 rounded-xl border border-white/10">
             <div
                 className="group relative bg-black/50 backdrop-blur-sm rounded-lg border border-primary/20 p-3 sm:p-4 md:p-5 lg:p-6 transition-all duration-500 overflow-hidden hover:border-primary/50 hover:bg-black/70"
                 onMouseEnter={() => setIsHovered(true)}
