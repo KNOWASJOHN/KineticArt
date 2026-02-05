@@ -30,29 +30,20 @@ export default function RegistrationForm({ onSuccess }: RegistrationFormProps) {
   });
 
   const [error, setError] = useState('');
-  const [isRegistrationOpen, setIsRegistrationOpen] = useState(true);
+  const [isRegistrationOpen, setIsRegistrationOpen] = useState(false);
 
-  // Check if registration is currently open based on time
-  const checkRegistrationHours = () => {
+  // Check if event has ended (event was on Feb 4-5, 2026)
+  const checkRegistrationStatus = () => {
     const now = new Date();
-    const currentHour = now.getHours();
-    const currentMinute = now.getMinutes();
-    const currentTimeInMinutes = currentHour * 60 + currentMinute;
-    const startTime = 9 * 60 + 30; // 9:30 AM
-    const endTime = 16 * 60 + 30; // 4:30 PM
+    const eventEndDate = new Date('2026-02-05T16:30:00+05:30'); // Event ended on Feb 5, 2026 at 4:30 PM IST
 
-    return currentTimeInMinutes >= startTime && currentTimeInMinutes < endTime;
+    // Registration is closed if current time is after event end
+    return now < eventEndDate;
   };
 
-  // Check registration hours on mount and every minute
+  // Check registration status on mount
   useEffect(() => {
-    setIsRegistrationOpen(checkRegistrationHours());
-
-    const interval = setInterval(() => {
-      setIsRegistrationOpen(checkRegistrationHours());
-    }, 60000); // Check every minute
-
-    return () => clearInterval(interval);
+    setIsRegistrationOpen(checkRegistrationStatus());
   }, []);
 
   // Load saved form data from localStorage on mount
@@ -109,16 +100,12 @@ export default function RegistrationForm({ onSuccess }: RegistrationFormProps) {
     e.preventDefault();
     setError('');
 
-    // Check if current time is within allowed registration hours (9:00 AM - 4:30 PM)
+    // Check if event has ended
     const now = new Date();
-    const currentHour = now.getHours();
-    const currentMinute = now.getMinutes();
-    const currentTimeInMinutes = currentHour * 60 + currentMinute;
-    const startTime = 9 * 60 + 30; // 9:30 AM in minutes
-    const endTime = 16 * 60 + 30; // 4:30 PM in minutes
+    const eventEndDate = new Date('2026-02-05T16:30:00+05:30'); // Event ended on Feb 5, 2026 at 4:30 PM IST
 
-    if (currentTimeInMinutes < startTime || currentTimeInMinutes >= endTime) {
-      setError('Registration is only available between 9:30 AM and 4:30 PM. Please try again during these hours.');
+    if (now >= eventEndDate) {
+      setError('Registration is now closed. The event concluded on February 5th, 2026.');
       return;
     }
 
@@ -268,11 +255,11 @@ export default function RegistrationForm({ onSuccess }: RegistrationFormProps) {
       <div className="p-4 sm:p-6 lg:p-8">
         {/* Registration Closed Banner */}
         {!isRegistrationOpen && (
-          <div className="mb-4 sm:mb-6 p-4 sm:p-6 rounded-lg sm:rounded-xl bg-gradient-to-r from-primary/20 via-secondary/20 to-primary/20 border-2 border-primary/40 backdrop-blur-sm animate-pulse-gentle">
+          <div className="mb-4 sm:mb-6 p-4 sm:p-6 rounded-lg sm:rounded-xl bg-gradient-to-r from-primary/20 via-secondary/20 to-primary/20 border-2 border-primary/40 backdrop-blur-sm">
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
               <div className="flex-shrink-0 self-center sm:self-auto">
                 <svg
-                  className="w-10 h-10 sm:w-12 sm:h-12 text-primary"
+                  className="w-10 h-10 sm:w-12 sm:h-12 text-secondary"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -281,140 +268,27 @@ export default function RegistrationForm({ onSuccess }: RegistrationFormProps) {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                   />
                 </svg>
               </div>
               <div className="flex-1 text-center sm:text-left">
                 <h3 className="text-lg sm:text-xl font-bold text-white mb-1 uppercase tracking-wide">
-                  Registration Currently Closed
+                  Event Has Concluded
                 </h3>
                 <p className="text-xs sm:text-sm text-muted-foreground">
-                  Registration is only available between <span className="text-primary font-semibold whitespace-nowrap">9:30 AM</span> and <span className="text-primary font-semibold whitespace-nowrap">4:30 PM</span>
+                  The Kinetic Art event ended on <span className="text-primary font-semibold whitespace-nowrap">February 5th, 2026</span>
                 </p>
                 <p className="text-xs text-muted-foreground/80 mt-1 hidden sm:block">
-                  Please return during these hours to complete your registration
+                  Thank you to all participants! Certificates will be distributed soon.
                 </p>
               </div>
             </div>
           </div>
         )}
 
-        {/* Header */}
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold tracking-wide text-white uppercase mb-2">
-            Register Here
-          </h2>
-          <p className="text-sm text-muted-foreground">
-            Secure your spot for an unforgettable experience
-          </p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-5">
-          {/* Full Name */}
-          <div className="space-y-2">
-            <Label htmlFor="fullName" className="text-xs font-semibold uppercase tracking-widest text-white/90">
-              Full Name
-            </Label>
-            <Input
-              id="fullName"
-              name="fullName"
-              type="text"
-              placeholder="John Doe"
-              value={formData.fullName}
-              onChange={handleChange}
-              required
-              disabled={!isRegistrationOpen}
-              className="bg-white/5 border border-white/20 text-white placeholder-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
-            />
-          </div>
-
-          {/* Email */}
-          <div className="space-y-2">
-            <Label htmlFor="email" className="text-xs font-semibold uppercase tracking-widest text-white/90">
-              Email Address
-            </Label>
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="john@example.com"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              disabled={!isRegistrationOpen}
-              className="bg-white/5 border border-white/20 text-white placeholder-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
-            />
-          </div>
-
-          {/* College */}
-          <div className="space-y-2">
-            <Label htmlFor="college" className="text-xs font-semibold uppercase tracking-widest text-white/90">
-              College / School
-            </Label>
-            <Input
-              id="college"
-              name="college"
-              type="text"
-              placeholder="Your Institution"
-              value={formData.college}
-              onChange={handleChange}
-              required
-              disabled={!isRegistrationOpen}
-              className="bg-white/5 border border-white/20 text-white placeholder-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
-            />
-          </div>
-
-          {/* Phone */}
-          <div className="space-y-2">
-            <Label htmlFor="phone" className="text-xs font-semibold uppercase tracking-widest text-white/90">
-              Phone Number
-            </Label>
-            <Input
-              id="phone"
-              name="phone"
-              type="tel"
-              placeholder="+91 XXXXX XXXXX"
-              value={formData.phone}
-              onChange={handlePhoneChange}
-              required
-              disabled={!isRegistrationOpen}
-              className="bg-white/5 border border-white/20 text-white placeholder-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
-            />
-          </div>
-
-          {error && (
-            <div className="rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive font-medium">
-              {error}
-            </div>
-          )}
-
-          {/* Buttons */}
-          <div className="flex flex-col md:flex-row gap-3">
-            <Button
-              type="submit"
-              disabled={!isRegistrationOpen}
-              className="flex-1 btn-gradient text-white font-bold py-3 rounded-lg transition-all uppercase tracking-wider disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Register Now
-            </Button>
-            <Button
-              type="button"
-              onClick={handleClear}
-              disabled={!isRegistrationOpen}
-              className="bg-white/10 hover:bg-white/20 text-white font-bold py-3 px-6 rounded-lg transition-all uppercase tracking-wider border border-white/20 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Clear
-            </Button>
-          </div>
-
-          <p className="text-center text-xs text-muted-foreground/80 pt-2">
-            All registrations are secure and confidential
-          </p>
-        </form>
-
         {/* Official Registration Section */}
-        <div className="mt-8 pt-8 border-t border-white/10">
+        <div className="mt-8 pt-8 border-t border-white/10 opacity-40 grayscale pointer-events-none">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
             {/* QR Code - Left on Desktop, Top on Mobile */}
             <div className="flex justify-center lg:justify-end order-2 lg:order-1">
