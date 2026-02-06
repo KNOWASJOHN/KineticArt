@@ -8,6 +8,7 @@ import CertificateSection from '@/components/certificate-section';
 import SponsorsSection from '@/components/sponsors-section';
 import EventCoordinator from '@/components/event-coordinator';
 import FeedbackSection from '@/components/feedback-section';
+import WebsiteMadeBy from '@/components/website-made-by';
 
 export default function Home() {
   const [showSuccess, setShowSuccess] = useState(false);
@@ -187,6 +188,11 @@ export default function Home() {
           {/* 7. Feedback Section (Mobile: After Event Coordinator, Desktop: Full Width Row 6) */}
           <div className="animate-slide-up space-y-6 order-7 lg:col-span-2 lg:row-start-6" style={{ animationDelay: '0.6s' }}>
             <FeedbackSection />
+          </div>
+
+          {/* 8. Website Made By Section (Mobile: After Feedback, Desktop: Full Width Row 7) */}
+          <div className="animate-slide-up space-y-6 order-8 lg:col-span-2 lg:row-start-7" style={{ animationDelay: '0.7s' }}>
+            <WebsiteMadeBy />
           </div>
         </div>
       </div>
