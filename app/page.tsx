@@ -6,6 +6,7 @@ import RegistrationForm from '@/components/registration-form';
 import SuccessOverlay from '@/components/success-overlay';
 import CertificateSection from '@/components/certificate-section';
 import SponsorsSection from '@/components/sponsors-section';
+import EventCoordinator from '@/components/event-coordinator';
 import FeedbackSection from '@/components/feedback-section';
 
 export default function Home() {
@@ -178,8 +179,13 @@ export default function Home() {
             <SponsorsSection />
           </div>
 
-          {/* 6. Feedback Section (Mobile: After Sponsors, Desktop: Full Width Row 5) */}
+          {/* 6. Event Coordinator Section (Mobile: After Sponsors, Desktop: Full Width Row 5) */}
           <div className="animate-slide-up space-y-6 order-6 lg:col-span-2 lg:row-start-5" style={{ animationDelay: '0.5s' }}>
+            <EventCoordinator />
+          </div>
+
+          {/* 7. Feedback Section (Mobile: After Event Coordinator, Desktop: Full Width Row 6) */}
+          <div className="animate-slide-up space-y-6 order-7 lg:col-span-2 lg:row-start-6" style={{ animationDelay: '0.6s' }}>
             <FeedbackSection />
           </div>
         </div>
