@@ -299,7 +299,7 @@ export default function RegistrationForm({ onSuccess }: RegistrationFormProps) {
                 className="hover:opacity-80 transition-opacity group"
               >
                 <img
-                  src="/reg_form/off_qr_code.jpeg"
+                  src="/reg_form/off_qr_code.png"
                   alt="Official Registration QR Code"
                   className="w-48 lg:w-56 rounded-lg border-2 border-white/20 elegant-shadow-lg cursor-pointer group-hover:border-primary/40 transition-all"
                 />
