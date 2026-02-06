@@ -46,7 +46,7 @@ export default function WebsiteMadeBy() {
                             <div className="flex-shrink-0">
                                 <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg bg-gradient-to-br from-primary/40 to-secondary/40 border-2 border-primary/60 overflow-hidden shadow-lg relative">
                                     <Image
-                                        src="/me/John.jpg"
+                                        src="/me/john.jpg"
                                         alt={developer.name}
                                         fill
                                         className="object-cover"
