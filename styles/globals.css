@@ -123,3 +123,33 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  /* Animated gradient text */
+  .animate-gradient {
+    background-size: 200% auto;
+    animation: gradient 3s linear infinite;
+  }
+
+  @keyframes gradient {
+    0% {
+      background-position: 0% center;
+    }
+    100% {
+      background-position: 200% center;
+    }
+  }
+
+  /* Background size utilities */
+  .bg-size-200 {
+    background-size: 200% auto;
+  }
+
+  .bg-pos-0 {
+    background-position: 0% center;
+  }
+
+  .bg-pos-100 {
+    background-position: 100% center;
+  }
+}

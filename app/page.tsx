@@ -5,6 +5,7 @@ import Link from 'next/link';
 import RegistrationForm from '@/components/registration-form';
 import SuccessOverlay from '@/components/success-overlay';
 import CertificateSection from '@/components/certificate-section';
+import CertificateLookup from '@/components/certificate-lookup';
 import SponsorsSection from '@/components/sponsors-section';
 import EventCoordinator from '@/components/event-coordinator';
 import FeedbackSection from '@/components/feedback-section';
@@ -175,23 +176,28 @@ export default function Home() {
             <CertificateSection />
           </div>
 
-          {/* 5. Sponsors Section (Mobile: After Certificate, Desktop: Full Width Row 4) */}
+          {/* 5. Certificate Lookup Section (Mobile: After Certificate, Desktop: Full Width Row 4) */}
           <div className="animate-slide-up space-y-6 order-5 lg:col-span-2 lg:row-start-4" style={{ animationDelay: '0.4s' }}>
+            <CertificateLookup />
+          </div>
+
+          {/* 6. Sponsors Section (Mobile: After Certificate Lookup, Desktop: Full Width Row 5) */}
+          <div className="animate-slide-up space-y-6 order-6 lg:col-span-2 lg:row-start-5" style={{ animationDelay: '0.5s' }}>
             <SponsorsSection />
           </div>
 
-          {/* 6. Event Coordinator Section (Mobile: After Sponsors, Desktop: Full Width Row 5) */}
-          <div className="animate-slide-up space-y-6 order-6 lg:col-span-2 lg:row-start-5" style={{ animationDelay: '0.5s' }}>
+          {/* 7. Event Coordinator Section (Mobile: After Sponsors, Desktop: Full Width Row 6) */}
+          <div className="animate-slide-up space-y-6 order-7 lg:col-span-2 lg:row-start-6" style={{ animationDelay: '0.6s' }}>
             <EventCoordinator />
           </div>
 
-          {/* 7. Feedback Section (Mobile: After Event Coordinator, Desktop: Full Width Row 6) */}
-          <div className="animate-slide-up space-y-6 order-7 lg:col-span-2 lg:row-start-6" style={{ animationDelay: '0.6s' }}>
+          {/* 8. Feedback Section (Mobile: After Event Coordinator, Desktop: Full Width Row 7) */}
+          <div className="animate-slide-up space-y-6 order-8 lg:col-span-2 lg:row-start-7" style={{ animationDelay: '0.7s' }}>
             <FeedbackSection />
           </div>
 
-          {/* 8. Website Made By Section (Mobile: After Feedback, Desktop: Full Width Row 7) */}
-          <div className="animate-slide-up space-y-6 order-8 lg:col-span-2 lg:row-start-7" style={{ animationDelay: '0.7s' }}>
+          {/* 9. Website Made By Section (Mobile: After Feedback, Desktop: Full Width Row 8) */}
+          <div className="animate-slide-up space-y-6 order-9 lg:col-span-2 lg:row-start-8" style={{ animationDelay: '0.8s' }}>
             <WebsiteMadeBy />
           </div>
         </div>

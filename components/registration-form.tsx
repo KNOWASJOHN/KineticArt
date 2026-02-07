@@ -279,8 +279,8 @@ export default function RegistrationForm({ onSuccess }: RegistrationFormProps) {
                 <p className="text-xs sm:text-sm text-muted-foreground">
                   The Kinetic Art event ended on <span className="text-primary font-semibold whitespace-nowrap">February 5th, 2026</span>
                 </p>
-                <p className="text-xs text-muted-foreground/80 mt-1 hidden sm:block">
-                  Thank you to all participants! Certificates will be distributed soon.
+                <p className="text-xs text-green-400 font-semibold mt-1">
+                  ✓ Certificates are now available for download below!
                 </p>
               </div>
             </div>
